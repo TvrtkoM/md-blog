@@ -21,6 +21,7 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   refreshTokens RefreshToken[]
+  posts         Post[]
 
   @@map("users")
 }
@@ -30,4 +31,13 @@ model RefreshToken {
   token  String @unique
   User   User?  @relation(fields: [userId], references: [id])
   userId Int?
+
+  @@map("refresh_tokens")
+}
+
+model Post {
+  id      Int    @id @default(autoincrement())
+  content String
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
 }
