@@ -1,5 +1,9 @@
 import { badRequestError, ErrorCode, invalidToken } from "@/lib/server-errors";
-import { generateAccessToken, verifyRefreshToken } from "@/lib/tokens";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken
+} from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -15,14 +19,23 @@ export async function POST(req: NextRequest) {
     const payload = verifyRefreshToken(refreshToken);
     if (typeof payload !== "string") {
       const { userId } = payload;
-      const dbRefreshTokens = await prismaClient.refreshToken.findMany({
-        where: { userId }
+      const dbRefreshToken = await prismaClient.refreshToken.findFirst({
+        where: { userId, token: refreshToken }
       });
-      if (
-        dbRefreshTokens.findIndex((tok) => tok.token === refreshToken) !== -1
-      ) {
+      if (dbRefreshToken) {
         const newAccessToken = generateAccessToken(userId);
+        const newRefreshToken = generateRefreshToken(userId);
+        await prismaClient.refreshToken.delete({
+          where: { token: refreshToken }
+        });
+        await prismaClient.refreshToken.create({
+          data: {
+            token: newRefreshToken,
+            userId
+          }
+        });
         cookieStore.set("token", newAccessToken);
+        cookieStore.set("refreshToken", newRefreshToken);
         return NextResponse.json({}, { status: 200 });
       } else {
         return NextResponse.json({}, { status: 403 });
