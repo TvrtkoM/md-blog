@@ -3,11 +3,12 @@ import {
   userDoesNotExistError,
   validationError
 } from "@/lib/server-errors";
+import { generateAccessToken, generateRefreshToken } from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
 import { LoginUserSchema } from "@/zod-schemas/user";
 import { compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
 import { omit } from "lodash";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -29,15 +30,28 @@ export async function POST(req: NextRequest) {
       return incorrectPasswordError();
     }
 
-    const token = sign(
-      {
-        type: "access",
-        userId: user.id
-      },
-      process.env.JWT_SECRET!,
-      { expiresIn: "5m" }
-    );
+    const token = generateAccessToken(user.id);
+    const refreshToken = generateRefreshToken(user.id);
 
-    return NextResponse.json({ user: omit(user, "password"), token });
+    const cookieStore = cookies();
+    cookieStore.set("token", token, {
+      httpOnly: true
+      // secure: true
+    });
+    cookieStore.set("refreshToken", refreshToken, {
+      httpOnly: true
+      // secure: true
+    });
+
+    await prismaClient.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: user.id
+      }
+    });
+
+    return NextResponse.json({
+      user: omit(user, "password")
+    });
   }
 }

@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { ZodIssue } from "zod";
 
-enum ErrorCode {
+export enum ErrorCode {
   USER_ALREADY_EXISTS = 1001,
   USER_DOES_NOT_EXIST = 1002,
   USER_INCORRECT_PASSWORD = 1003,
-  VALIDATION_ERROR = 2001
+  VALIDATION_ERROR = 2001,
+  GENERAL_BAD_REQUEST = 3001,
+  INVALID_TOKEN = 4001
 }
 
 interface ErrorJson {
@@ -60,5 +62,13 @@ export function validationError(issues: ZodIssue[]) {
     message: issues,
     errorCode: ErrorCode.VALIDATION_ERROR,
     statusCode: 500
+  });
+}
+
+export function invalidToken() {
+  return errorJson({
+    message: "Invalid token",
+    errorCode: ErrorCode.INVALID_TOKEN,
+    statusCode: 403
   });
 }
