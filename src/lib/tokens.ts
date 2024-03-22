@@ -2,7 +2,7 @@ import { sign, verify } from "jsonwebtoken";
 import crypto from "crypto";
 
 export function generateAccessToken(userId: number, expiresIn?: string) {
-  expiresIn = expiresIn ?? "5s";
+  expiresIn = expiresIn ?? "5m";
   return sign(
     {
       type: "access",
