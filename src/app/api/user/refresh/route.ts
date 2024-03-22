@@ -4,6 +4,7 @@ import {
   encryptRefreshToken,
   generateAccessToken,
   generateRefreshToken,
+  setTokenToCookieStore,
   verifyRefreshToken
 } from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
@@ -41,10 +42,9 @@ export async function POST(req: NextRequest) {
           }
         });
 
-        cookieStore.set("token", newAccessToken, { httpOnly: true });
-        cookieStore.set("refreshToken", newRefreshToken, {
-          httpOnly: true
-        });
+        setTokenToCookieStore("token", newAccessToken, cookieStore);
+        setTokenToCookieStore("refreshToken", newRefreshToken, cookieStore);
+
         return NextResponse.json({}, { status: 200 });
       } else {
         return NextResponse.json({}, { status: 403 });

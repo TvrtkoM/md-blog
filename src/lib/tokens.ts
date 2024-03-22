@@ -1,5 +1,6 @@
-import { sign, verify } from "jsonwebtoken";
 import crypto from "crypto";
+import { sign, verify } from "jsonwebtoken";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 export function generateAccessToken(userId: number, expiresIn?: string) {
   expiresIn = expiresIn ?? "5m";
@@ -58,4 +59,15 @@ export function encryptRefreshToken(token: string) {
 
 export function decryptRefreshToken(token: string) {
   return decrypt(token);
+}
+
+export function setTokenToCookieStore(
+  name: "token" | "refreshToken",
+  value: string,
+  cookieStore: ReadonlyRequestCookies
+) {
+  cookieStore.set(name, value, {
+    httpOnly: true
+    // secure: true
+  });
 }

@@ -6,7 +6,8 @@ import {
 import {
   encryptRefreshToken,
   generateAccessToken,
-  generateRefreshToken
+  generateRefreshToken,
+  setTokenToCookieStore
 } from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
 import { LoginUserSchema } from "@/zod-schemas/user";
@@ -41,15 +42,8 @@ export async function POST(req: NextRequest) {
 
     const cookieStore = cookies();
 
-    // TODO extract to helper functions since it is used in couple of places
-    cookieStore.set("token", token, {
-      httpOnly: true
-      // secure: true
-    });
-    cookieStore.set("refreshToken", refreshToken, {
-      httpOnly: true
-      // secure: true
-    });
+    setTokenToCookieStore("token", token, cookieStore);
+    setTokenToCookieStore("refreshToken", refreshToken, cookieStore);
 
     const oldRefreshToken = await prismaClient.refreshToken.findFirst({
       where: { userId: user.id }
