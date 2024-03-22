@@ -3,7 +3,11 @@ import {
   userDoesNotExistError,
   validationError
 } from "@/lib/server-errors";
-import { generateAccessToken, generateRefreshToken } from "@/lib/tokens";
+import {
+  encryptRefreshToken,
+  generateAccessToken,
+  generateRefreshToken
+} from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
 import { LoginUserSchema } from "@/zod-schemas/user";
 import { compare } from "bcrypt";
@@ -33,7 +37,11 @@ export async function POST(req: NextRequest) {
     const token = generateAccessToken(user.id);
     const refreshToken = generateRefreshToken(user.id);
 
+    const encryptedRefreshToken = encryptRefreshToken(refreshToken);
+
     const cookieStore = cookies();
+
+    // TODO extract to helper functions since it is used in couple of places
     cookieStore.set("token", token, {
       httpOnly: true
       // secure: true
@@ -43,12 +51,23 @@ export async function POST(req: NextRequest) {
       // secure: true
     });
 
-    await prismaClient.refreshToken.create({
-      data: {
-        token: refreshToken,
-        userId: user.id
-      }
+    const oldRefreshToken = await prismaClient.refreshToken.findFirst({
+      where: { userId: user.id }
     });
+
+    if (oldRefreshToken) {
+      await prismaClient.refreshToken.update({
+        where: { userId: user.id },
+        data: { token: encryptedRefreshToken }
+      });
+    } else {
+      await prismaClient.refreshToken.create({
+        data: {
+          token: encryptedRefreshToken,
+          userId: user.id
+        }
+      });
+    }
 
     return NextResponse.json({
       user: omit(user, "password")
