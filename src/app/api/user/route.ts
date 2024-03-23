@@ -13,12 +13,12 @@ export async function GET(req: NextRequest) {
   }
   try {
     const payload = verifyAccessToken(accessToken);
-    if (typeof payload !== "string") {
+    if (typeof payload !== "string" && payload.userId) {
       const { userId } = payload;
       const user = await prismaClient.user.findFirst({ where: { id: userId } });
       return NextResponse.json(omit(user, "password"), { status: 200 });
     } else {
-      return badRequestError("bad request", ErrorCode.GENERAL_BAD_REQUEST);
+      return invalidToken();
     }
   } catch {
     return invalidToken();

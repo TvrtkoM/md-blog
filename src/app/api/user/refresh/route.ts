@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   }
   try {
     const payload = verifyRefreshToken(refreshToken);
-    if (typeof payload !== "string") {
+    if (typeof payload !== "string" && payload.userId) {
       const { userId } = payload;
       const dbRefreshToken = await prismaClient.refreshToken.findFirst({
         where: { userId }
@@ -45,12 +45,12 @@ export async function POST(req: NextRequest) {
         setTokenToCookieStore("token", newAccessToken, cookieStore);
         setTokenToCookieStore("refreshToken", newRefreshToken, cookieStore);
 
-        return NextResponse.json({}, { status: 200 });
+        return NextResponse.json(null, { status: 200 });
       } else {
-        return NextResponse.json({}, { status: 403 });
+        return NextResponse.json(null, { status: 403 });
       }
     } else {
-      return badRequestError("bad request", ErrorCode.GENERAL_BAD_REQUEST);
+      return invalidToken();
     }
   } catch {
     return invalidToken();
