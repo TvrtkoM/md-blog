@@ -2,12 +2,15 @@ import { z } from "zod";
 
 export const RegisterUserSchema = z
   .object({
-    name: z.string(),
+    name: z.string().refine((val) => val.length > 0, "Required"),
     email: z.string().email(),
     password: z
       .string()
       .regex(
-        /^(\S)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹])[a-zA-Z0-9~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]{10,16}$/
+        /^(\S)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹])[a-zA-Z0-9~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]{10,21}$/,
+        {
+          message: "Invalid password"
+        }
       ),
     confirmPassword: z.string()
   })
@@ -24,4 +27,12 @@ export const RegisterUserSchema = z
 export const LoginUserSchema = z.object({
   email: z.string().email(),
   password: z.string()
+});
+
+export const UserResponseSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  email: z.string().email(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime()
 });
