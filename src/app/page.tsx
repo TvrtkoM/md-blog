@@ -1,8 +1,7 @@
 "use client";
-import useMeQuery from "@/queries/useMeQuery";
+import { useUserContext } from "@/providers/UserProvider";
 
 export default function Home() {
-  const { data: me } = useMeQuery();
-  console.log(me);
-  return <main className=""></main>;
+  const userContext = useUserContext();
+  return <main className="">Logged in as {userContext.user?.name}</main>;
 }

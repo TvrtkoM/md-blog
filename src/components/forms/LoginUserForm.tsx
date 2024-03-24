@@ -1,14 +1,20 @@
-import { LoginUserSchema } from "@/zod-schemas/user";
+import { LoginFormData, LoginUserSchema } from "@/zod-schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "../ui/Button";
 import InputWithLabel from "./InputWithLabel";
+import useLoginUserMutation from "@/mutations/useLoginUserMutation";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { hideMessage, showMessage } from "@/state/slices/alert/alertSlice";
+import { useRouter } from "next/navigation";
 
-export type LoginFormData = z.infer<typeof LoginUserSchema>;
-
-const RegisterUserForm = () => {
-  const { control } = useForm<LoginFormData>({
+const LoginUserForm = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid }
+  } = useForm<LoginFormData>({
     resolver: zodResolver(LoginUserSchema),
     defaultValues: {
       email: "",
@@ -18,9 +24,34 @@ const RegisterUserForm = () => {
     mode: "all"
   });
 
+  const { mutate: login, error, isSuccess } = useLoginUserMutation();
+
+  const router = useRouter();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const message = error?.response?.data?.message;
+    if (message && typeof message === "string") {
+      dispatch(showMessage(message));
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(hideMessage());
+      router.push("/");
+    }
+  }, [isSuccess]);
+
   return (
     <>
-      <form className="mt-4 space-y-2">
+      <form
+        className="mt-4 space-y-2"
+        onSubmit={handleSubmit((data) => {
+          login(data);
+        })}
+      >
         <InputWithLabel
           control={control}
           name="email"
@@ -34,10 +65,12 @@ const RegisterUserForm = () => {
           placeholder="Password"
           type="password"
         />
-        <Button className="!mt-7">Log in</Button>
+        <Button type="submit" className="!mt-7" disabled={!isValid}>
+          Log in
+        </Button>
       </form>
     </>
   );
 };
 
-export default RegisterUserForm;
+export default LoginUserForm;

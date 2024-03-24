@@ -29,6 +29,8 @@ export const LoginUserSchema = z.object({
   password: z.string().refine((val) => val.length > 0, "Required")
 });
 
+export type LoginFormData = z.infer<typeof LoginUserSchema>;
+
 export const UserResponseSchema = z.object({
   id: z.number(),
   name: z.string(),
