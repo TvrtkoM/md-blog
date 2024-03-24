@@ -1,21 +1,14 @@
 import { RegisterUserSchema } from "@/zod-schemas/user";
-import React from "react";
-import { useController, useForm } from "react-hook-form";
-import { z } from "zod";
-import InputWithLabel from "./InputWithLabel";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "../ui/Button";
+import InputWithLabel from "./InputWithLabel";
 
 export type RegistrationFormData = z.infer<typeof RegisterUserSchema>;
 
-export const useRegistrationFormController =
-  useController<RegistrationFormData>;
-
 const RegisterUserForm = () => {
-  const {
-    control,
-    formState: { errors }
-  } = useForm<RegistrationFormData>({
+  const { control } = useForm<RegistrationFormData>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       name: "",
@@ -27,7 +20,6 @@ const RegisterUserForm = () => {
     mode: "all"
   });
 
-  console.log(errors);
   return (
     <>
       <form className="mt-4 space-y-2">

@@ -31,11 +31,11 @@ const InputWithLabel = <T extends FieldValues>({
   } = useController<T>({ control, name });
   return (
     <fieldset>
-      <div className="flex items-baseline justify-between">
+      <div className="flex items-baseline justify-between h-6">
         <Label htmlFor={name} className="leading-6 cursor-pointer">
           <span className="text-xs">{label}</span>
         </Label>
-        <p className="text-red-500 text-xs mt-0.5 h-4">{error?.message}</p>
+        <p className="text-red-500 text-xs mt-0.5">{error?.message}</p>
       </div>
       <Input
         {...field}

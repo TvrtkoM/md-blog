@@ -1,7 +1,15 @@
-import React from "react";
+"use client";
+import LoginUserForm from "@/components/forms/LoginUserForm";
 
-const LoginPage = () => {
-  return <div>LoginPage</div>;
+const RegistrationPage = () => {
+  return (
+    <>
+      <h2 className="text-xl font-semibold pb-3 border-b border-stone-400">
+        Log in
+      </h2>
+      <LoginUserForm />
+    </>
+  );
 };
 
-export default LoginPage;
+export default RegistrationPage;

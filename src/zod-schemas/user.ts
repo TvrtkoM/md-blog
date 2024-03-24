@@ -26,7 +26,7 @@ export const RegisterUserSchema = z
 
 export const LoginUserSchema = z.object({
   email: z.string().email(),
-  password: z.string()
+  password: z.string().refine((val) => val.length > 0, "Required")
 });
 
 export const UserResponseSchema = z.object({
