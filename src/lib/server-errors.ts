@@ -10,7 +10,7 @@ export enum ErrorCode {
   INVALID_TOKEN = 4001
 }
 
-interface ErrorJson {
+export interface ErrorJson {
   message: string | string[] | ZodIssue[];
   errorCode: ErrorCode;
   statusCode: number;
@@ -28,7 +28,7 @@ function errorJson({ message, statusCode, errorCode }: ErrorJson) {
 
 export function userExistsError() {
   return errorJson({
-    message: "User already exists",
+    message: "User with same e-mail already exists.",
     errorCode: ErrorCode.USER_ALREADY_EXISTS,
     statusCode: 409
   });

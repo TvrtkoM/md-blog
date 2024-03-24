@@ -36,3 +36,5 @@ export const UserResponseSchema = z.object({
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime()
 });
+
+export type UserResponseData = z.infer<typeof UserResponseSchema>;

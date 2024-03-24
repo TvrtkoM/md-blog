@@ -1,10 +1,9 @@
-import { UserResponseSchema } from "@/zod-schemas/user";
+import { UserResponseData } from "@/zod-schemas/user";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { z } from "zod";
 
 export default function useMeQuery() {
-  const query = useQuery<z.infer<typeof UserResponseSchema>>({
+  const query = useQuery<UserResponseData>({
     retry: false,
     queryKey: ["user"],
     queryFn: async () => {

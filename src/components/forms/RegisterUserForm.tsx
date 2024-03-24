@@ -1,6 +1,12 @@
+import useRegisterUserMutation from "@/mutations/useRegisterUserMutation";
 import { RegisterUserSchema } from "@/zod-schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import isEmpty from "lodash/isEmpty";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDebounce } from "use-debounce";
 import { z } from "zod";
 import { Button } from "../ui/Button";
 import InputWithLabel from "./InputWithLabel";
@@ -8,7 +14,13 @@ import InputWithLabel from "./InputWithLabel";
 export type RegistrationFormData = z.infer<typeof RegisterUserSchema>;
 
 const RegisterUserForm = () => {
-  const { control } = useForm<RegistrationFormData>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setError,
+    formState: { errors, isValid, isValidating }
+  } = useForm<RegistrationFormData>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       name: "",
@@ -17,12 +29,46 @@ const RegisterUserForm = () => {
       password: ""
     },
     reValidateMode: "onChange",
-    mode: "all"
+    mode: "onChange"
   });
+  const [submitting, setSubmitting] = useState(false);
+
+  const email = watch("email");
+
+  const [debouncedEmail] = useDebounce(email, 300, { leading: true });
+
+  useEffect(() => {
+    if (!debouncedEmail || !debouncedEmail.includes("@")) return;
+    const controller = new AbortController();
+    const res = axios.post<boolean>(
+      "/api/user/check-exists",
+      { email: debouncedEmail },
+      { signal: controller.signal }
+    );
+    res.then((result) => {
+      if (!result.data) return;
+      setError("email", { message: "User with this e-mail already exists." });
+    });
+    return () => controller?.abort();
+  }, [debouncedEmail]);
+
+  const { mutate: register, isSuccess, data } = useRegisterUserMutation();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isSuccess || !data) return;
+    router.push(`/auth/login?new-user=${data.name}`);
+  }, [isSuccess, data]);
 
   return (
     <>
-      <form className="mt-4 space-y-2">
+      <form
+        className="mt-4 space-y-2"
+        onSubmit={handleSubmit((data) => {
+          setSubmitting(true);
+          register(data);
+        })}
+      >
         <InputWithLabel
           control={control}
           name="name"
@@ -53,7 +99,13 @@ const RegisterUserForm = () => {
           placeholder="Confirm password *"
           type="password"
         />
-        <Button className="!mt-7">Create account</Button>
+        <Button
+          type="submit"
+          className="!mt-7"
+          disabled={submitting || !isEmpty(errors) || isValidating || !isValid}
+        >
+          Create account
+        </Button>
       </form>
     </>
   );
