@@ -1,4 +1,4 @@
-import { badRequestError, ErrorCode, invalidToken } from "@/lib/server-errors";
+import { invalidToken } from "@/lib/server-errors";
 import {
   decryptRefreshToken,
   encryptRefreshToken,
@@ -8,6 +8,7 @@ import {
   verifyRefreshToken
 } from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
+import omit from "lodash/omit";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -45,7 +46,11 @@ export async function POST(req: NextRequest) {
         setTokenToCookieStore("token", newAccessToken, cookieStore);
         setTokenToCookieStore("refreshToken", newRefreshToken, cookieStore);
 
-        return NextResponse.json(null, { status: 200 });
+        const user = await prismaClient.user.findFirst({
+          where: { id: userId }
+        });
+
+        return NextResponse.json(omit(user, "password"), { status: 200 });
       } else {
         return NextResponse.json(null, { status: 403 });
       }

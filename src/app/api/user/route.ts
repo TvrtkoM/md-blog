@@ -1,4 +1,4 @@
-import { badRequestError, ErrorCode, invalidToken } from "@/lib/server-errors";
+import { invalidToken } from "@/lib/server-errors";
 import { verifyAccessToken } from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
 import omit from "lodash/omit";
@@ -21,6 +21,6 @@ export async function GET(req: NextRequest) {
       return invalidToken();
     }
   } catch {
-    return invalidToken();
+    return NextResponse.json(null, { status: 401 });
   }
 }
