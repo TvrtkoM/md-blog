@@ -1,6 +1,8 @@
 import crypto from "crypto";
 import { sign, verify } from "jsonwebtoken";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { NextResponse } from "next/server";
+import { invalidToken } from "./server-errors";
 
 export function generateAccessToken(userId: number, expiresIn?: string) {
   expiresIn = expiresIn ?? "5m";
@@ -71,3 +73,21 @@ export function setTokenToCookieStore(
     // secure: true
   });
 }
+
+export const getAccessTokenDataOrError = (cookies: ReadonlyRequestCookies) => {
+  const accessToken = cookies.get("token")?.value;
+  if (!accessToken) {
+    return NextResponse.json(null, { status: 403 });
+  }
+  try {
+    const payload = verifyAccessToken(accessToken);
+    if (typeof payload !== "string" && payload.userId) {
+      const { userId } = payload;
+      return userId as number;
+    } else {
+      return invalidToken();
+    }
+  } catch {
+    return NextResponse.json(null, { status: 401 });
+  }
+};
