@@ -69,7 +69,8 @@ export function setTokenToCookieStore(
   cookieStore: ReadonlyRequestCookies
 ) {
   cookieStore.set(name, value, {
-    httpOnly: true
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 365
     // secure: true
   });
 }
