@@ -1,9 +1,12 @@
 "use client";
 import MainContainer from "@/components/MainContainer";
+import { useUserContext } from "@/providers/UserProvider";
+import withAuthGuard from "@/withAuthGuard";
 import "@uiw/react-markdown-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
@@ -12,6 +15,7 @@ const MarkdownEditor = dynamic(
 
 const CreatePostPage = () => {
   const [text, setText] = useState("## Hi, *Pluto*!");
+
   return (
     <MainContainer>
       <h2 className="text-xl font-semibold pb-3 border-b border-stone-400 mb-6">
@@ -29,4 +33,4 @@ const CreatePostPage = () => {
   );
 };
 
-export default CreatePostPage;
+export default withAuthGuard(CreatePostPage);

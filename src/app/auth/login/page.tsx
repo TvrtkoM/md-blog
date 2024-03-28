@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 const RegistrationPage = () => {
   const searchParams = useSearchParams();
   const newUser = searchParams.get("new-user");
+
   return (
     <>
       {newUser && (

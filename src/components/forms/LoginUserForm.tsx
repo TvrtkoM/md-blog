@@ -7,7 +7,7 @@ import useLoginUserMutation from "@/mutations/useLoginUserMutation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { hideMessage, showMessage } from "@/state/slices/alert/alertSlice";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginUserForm = () => {
   const {
@@ -26,6 +26,9 @@ const LoginUserForm = () => {
 
   const { mutate: login, error, isSuccess } = useLoginUserMutation();
 
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
+
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -40,7 +43,7 @@ const LoginUserForm = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(hideMessage());
-      router.push("/");
+      router.push(next ?? "/");
     }
   }, [isSuccess]);
 
