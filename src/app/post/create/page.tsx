@@ -1,9 +1,9 @@
 "use client";
 import MainContainer from "@/components/MainContainer";
-import { useState } from "react";
-import dynamic from "next/dynamic";
 import "@uiw/react-markdown-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
