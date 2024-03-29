@@ -29,13 +29,7 @@ const CreatePostForm = () => {
     mode: "onChange",
     reValidateMode: "onChange"
   });
-  const { mutate: submitPost, isSuccess, data } = useCreatePostMutation();
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log(data);
-    }
-  }, [isSuccess, data]);
+  const { mutate: submitPost } = useCreatePostMutation();
 
   return (
     <form
