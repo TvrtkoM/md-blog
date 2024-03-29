@@ -1,26 +1,74 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { PostFormData, PostSchema } from "@/zod-schemas/post";
+import { zodResolver } from "@hookform/resolvers/zod";
 import "@uiw/react-markdown-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from "next/dynamic";
+import { Controller, useForm } from "react-hook-form";
+import { Button } from "../ui/Button";
+import useCreatePostMutation from "@/mutations/useCreatePostMutation";
+import { useEffect } from "react";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
-  { ssr: false }
+  { ssr: false, loading: () => <>Loading editor...</> }
 );
 
 const CreatePostForm = () => {
-  const [text, setText] = useState("## Hi, *Pluto*!");
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid }
+  } = useForm<PostFormData>({
+    resolver: zodResolver(PostSchema),
+    defaultValues: {
+      content: ""
+    },
+    mode: "onChange",
+    reValidateMode: "onChange"
+  });
+  const { mutate: submitPost, isSuccess, data } = useCreatePostMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(data);
+    }
+  }, [isSuccess, data]);
+
   return (
-    <div data-color-mode="light">
-      <MarkdownEditor
-        value={text}
-        className="h-96"
-        enablePreview={false}
-        onChange={(v) => setText(v)}
-      />
-    </div>
+    <form
+      onSubmit={handleSubmit((data) => {
+        submitPost(data);
+      })}
+    >
+      <div
+        data-color-mode="light"
+        className={cn("border border-transparent rounded-sm", {
+          "border-red-500": errors?.content?.message
+        })}
+      >
+        <Controller
+          control={control}
+          name="content"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <MarkdownEditor
+                value={value}
+                className="h-96"
+                enablePreview={false}
+                toolbarsMode={[]}
+                onChange={onChange}
+              />
+            );
+          }}
+        />
+      </div>
+      <Button type="submit" className="mt-7" disabled={!isValid}>
+        Create
+      </Button>
+    </form>
   );
 };
 
