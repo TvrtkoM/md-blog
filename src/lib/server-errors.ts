@@ -7,7 +7,8 @@ export enum ErrorCode {
   USER_INCORRECT_PASSWORD = 1003,
   VALIDATION_ERROR = 2001,
   GENERAL_BAD_REQUEST = 3001,
-  INVALID_TOKEN = 4001
+  INVALID_TOKEN = 4001,
+  POST_NOT_FOUND = 5001
 }
 
 export interface ErrorJson {
@@ -70,5 +71,13 @@ export function invalidToken() {
     message: "Invalid token",
     errorCode: ErrorCode.INVALID_TOKEN,
     statusCode: 403
+  });
+}
+
+export function postNotFound() {
+  return errorJson({
+    message: "Post not found",
+    errorCode: ErrorCode.POST_NOT_FOUND,
+    statusCode: 404
   });
 }

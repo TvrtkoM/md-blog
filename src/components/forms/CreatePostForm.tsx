@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import useCreatePostMutation from "@/mutations/useCreatePostMutation";
 import { PostFormData, PostSchema } from "@/zod-schemas/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "@uiw/react-markdown-editor/markdown-editor.css";
@@ -8,8 +9,6 @@ import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
-import useCreatePostMutation from "@/mutations/useCreatePostMutation";
-import { useEffect } from "react";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
