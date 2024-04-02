@@ -1,3 +1,4 @@
+"use client";
 import LoginUserForm from "@/components/forms/LoginUserForm";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
