@@ -1,3 +1,4 @@
+"use client";
 import { LoginFormData, LoginUserSchema } from "@/zod-schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -38,14 +39,14 @@ const LoginUserForm = () => {
     if (message && typeof message === "string") {
       dispatch(showMessage(message));
     }
-  }, [error]);
+  }, [error, dispatch]);
 
   useEffect(() => {
     if (isSuccess) {
       dispatch(hideMessage());
       router.push(next ?? "/");
     }
-  }, [isSuccess]);
+  }, [isSuccess, next, router]);
 
   return (
     <>

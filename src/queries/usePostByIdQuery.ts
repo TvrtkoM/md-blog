@@ -2,7 +2,7 @@ import axiosInstance from "@/lib/axios-instance";
 import { PostResponseData } from "@/zod-schemas/post";
 import { useQuery } from "@tanstack/react-query";
 
-export default function (id: number) {
+export default function usePostByIdQuery(id: number) {
   return useQuery<PostResponseData>({
     queryKey: ["post", { id }],
     queryFn: async () => {

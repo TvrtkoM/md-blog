@@ -1,3 +1,4 @@
+"use client";
 import useRegisterUserMutation from "@/mutations/useRegisterUserMutation";
 import { RegisterUserSchema } from "@/zod-schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,7 +51,7 @@ const RegisterUserForm = () => {
       setError("email", { message: "User with this e-mail already exists." });
     });
     return () => controller?.abort();
-  }, [debouncedEmail]);
+  }, [debouncedEmail, setError]);
 
   const { mutate: register, isSuccess, data } = useRegisterUserMutation();
   const router = useRouter();
@@ -58,7 +59,7 @@ const RegisterUserForm = () => {
   useEffect(() => {
     if (!isSuccess || !data) return;
     router.push(`/auth/login?new-user=${data.name}`);
-  }, [isSuccess, data]);
+  }, [isSuccess, data, router]);
 
   return (
     <>

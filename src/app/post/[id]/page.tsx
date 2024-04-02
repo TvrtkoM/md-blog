@@ -1,4 +1,3 @@
-import PostDetails from "@/components/PostDetails";
 import { PostResponseData } from "@/zod-schemas/post";
 import React from "react";
 
@@ -7,7 +6,8 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
     method: "get"
   });
   const post: PostResponseData = await res.json();
-  return <PostDetails post={post} />;
+  console.log(post);
+  return <>{post.content}</>;
 };
 
 export default PostPage;

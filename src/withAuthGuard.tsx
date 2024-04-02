@@ -3,7 +3,7 @@ import { useUserContext } from "./providers/UserProvider";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function withAuthGuard(Component: ComponentType) {
-  return () => {
+  const AuthGuard = () => {
     const { user, isLoading } = useUserContext();
     const router = useRouter();
     const pathname = usePathname();
@@ -13,7 +13,7 @@ export default function withAuthGuard(Component: ComponentType) {
         return;
       }
       if (!user) router.push(`/auth/login?next=${pathname}`);
-    }, [user, isLoading]);
+    }, [user, isLoading, pathname, router]);
 
     if (isLoading || !user) {
       return null;
@@ -21,4 +21,5 @@ export default function withAuthGuard(Component: ComponentType) {
 
     return <Component />;
   };
+  return AuthGuard;
 }
