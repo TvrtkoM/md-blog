@@ -3,7 +3,7 @@ import React from "react";
 
 const RootLoadingScreen = () => {
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
       <CircleLoader />
     </div>
   );

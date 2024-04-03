@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({
-      user: omit(user, "password")
+      ...omit(user, "password")
     });
   }
 }

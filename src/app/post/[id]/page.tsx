@@ -1,3 +1,4 @@
+import MainContainer from "@/components/MainContainer";
 import PostContentPreview from "@/components/PostContentPreview";
 import { isErrorResponse } from "@/lib/client-errors";
 import { notFound } from "next/navigation";
@@ -11,9 +12,9 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
     return notFound();
   }
   return (
-    <>
+    <MainContainer>
       <PostContentPreview content={data.content} />
-    </>
+    </MainContainer>
   );
 };
 

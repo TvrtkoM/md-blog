@@ -13,9 +13,9 @@ export default function withAuthGuard(Component: ComponentType) {
         return;
       }
       if (!user) router.push(`/auth/login?next=${pathname}`);
-    }, [user, isLoading, pathname, router]);
+    }, [user, isLoading, router, pathname]);
 
-    if (isLoading || !user) {
+    if (!user) {
       return null;
     }
 

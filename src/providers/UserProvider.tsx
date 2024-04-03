@@ -1,10 +1,11 @@
+"use client";
 import CircleLoader from "@/components/ui/CircleLoader";
 import useMeQuery from "@/queries/useMeQuery";
 import { UserResponseData } from "@/zod-schemas/user";
 import { createContext, PropsWithChildren, useContext } from "react";
 
 interface UserContextData {
-  user: UserResponseData | undefined;
+  user: UserResponseData | null;
   isLoading: boolean;
 }
 
@@ -22,7 +23,7 @@ export default function UserProvider({ children }: PropsWithChildren<{}>) {
   }
 
   return (
-    <UserContext.Provider value={{ user: me, isLoading }}>
+    <UserContext.Provider value={{ user: me ?? null, isLoading }}>
       {children}
     </UserContext.Provider>
   );

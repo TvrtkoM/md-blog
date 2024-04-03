@@ -3,7 +3,7 @@ import { UserResponseData } from "@/zod-schemas/user";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useMeQuery() {
-  const query = useQuery<UserResponseData>({
+  const query = useQuery<UserResponseData | null>({
     retry: false,
     queryKey: ["user"],
     queryFn: async () => {

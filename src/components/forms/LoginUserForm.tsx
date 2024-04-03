@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { hideMessage, showMessage } from "@/state/slices/alert/alertSlice";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LoginUserForm = () => {
   const {
@@ -26,6 +27,7 @@ const LoginUserForm = () => {
   });
 
   const { mutate: login, error, isSuccess } = useLoginUserMutation();
+  const queryClient = useQueryClient();
 
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
@@ -46,7 +48,7 @@ const LoginUserForm = () => {
       dispatch(hideMessage());
       router.push(next ?? "/");
     }
-  }, [isSuccess, next, router]);
+  }, [isSuccess, queryClient, router, next]);
 
   return (
     <>

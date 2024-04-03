@@ -10,10 +10,11 @@ export async function DELETE() {
   const refreshToken = cookieStore.get("refreshToken")?.value;
   const accessToken = cookieStore.get("token")?.value;
 
+  if (!refreshToken && !accessToken) {
+    return NextResponse.json(null, { status: 200 });
+  }
+
   try {
-    if (!refreshToken && !accessToken) {
-      return NextResponse.json({}, { status: 204 });
-    }
     if (refreshToken) {
       const payload = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
       if (typeof payload === "string") {

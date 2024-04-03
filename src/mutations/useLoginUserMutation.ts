@@ -14,10 +14,8 @@ export default function useLoginUserMutation() {
       const res = await axios.post<UserResponseData>("/api/user/login", data);
       return res.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user"]
-      });
+    onSuccess: (data) => {
+      queryClient.setQueryData(["user"], data);
     }
   });
 }

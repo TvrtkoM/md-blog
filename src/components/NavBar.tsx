@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
 import { Button } from "./ui/Button";
+import useLogoutUserMutation from "@/mutations/useLogoutUserMutation";
 
 interface NavBarItemProps {
   label: string;
@@ -29,12 +30,14 @@ const AuthNav: FC = () => {
   const path = usePathname();
   const { user } = useUserContext();
 
+  const { mutate: logout } = useLogoutUserMutation();
+
   return (
     <div className="flex items-center space-x-4">
       {user ? (
         <>
           <div>Logged in as {user.name}</div>
-          <Button variant="ghost" className="h-6">
+          <Button variant="ghost" className="h-6" onClick={() => logout()}>
             Log out
           </Button>
         </>
