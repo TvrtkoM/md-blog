@@ -1,14 +1,17 @@
 "use client";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import ContentFrame from "./ContentFrame";
 
 const PostContentPreview = ({ content }: { content: string }) => {
   return (
-    <div data-color-mode="light">
-      <MarkdownPreview
-        source={content}
-        className="!bg-transparent"
-      ></MarkdownPreview>
-    </div>
+    <ContentFrame>
+      <div data-color-mode="light">
+        <MarkdownPreview
+          source={content}
+          className="!bg-transparent"
+        ></MarkdownPreview>
+      </div>
+    </ContentFrame>
   );
 };
 
