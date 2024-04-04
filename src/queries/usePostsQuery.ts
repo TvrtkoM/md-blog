@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/axios-instance";
 import { PostResponseData } from "@/zod-schemas/post";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function usePostsQuery() {
   const query = useSuspenseQuery<PostResponseData[]>({

@@ -9,6 +9,8 @@ import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
@@ -28,7 +30,14 @@ const CreatePostForm = () => {
     mode: "onChange",
     reValidateMode: "onChange"
   });
-  const { mutate: submitPost } = useCreatePostMutation();
+  const { mutate: submitPost, isSuccess } = useCreatePostMutation();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/posts");
+    }
+  }, [isSuccess]);
 
   return (
     <form
