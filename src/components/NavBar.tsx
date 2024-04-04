@@ -61,18 +61,21 @@ const AuthNav: FC = () => {
 
 const NavBar = () => {
   const path = usePathname();
+  const { user } = useUserContext();
 
   return (
     <div className="h-11 w-full bg-slate-700 shadow-lg">
       <div className="container h-full max-w-screen-xl px-4">
         <div className="flex items-center justify-between h-full text-gray-200 text-sm">
-          <div>
-            <NavBarItem
-              label="Create Post"
-              selected={path === "/post/create"}
-              path="/post/create"
-            />
-          </div>
+          {user && (
+            <div>
+              <NavBarItem
+                label="Create Post"
+                selected={path === "/post/create"}
+                path="/post/create"
+              />
+            </div>
+          )}
           <div className="ml-auto">
             <AuthNav />
           </div>
