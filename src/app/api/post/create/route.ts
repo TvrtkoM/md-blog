@@ -18,7 +18,9 @@ export async function POST(req: NextRequest) {
     if (!postData.success) {
       return validationError(postData.error.issues);
     } else {
-      const slug = `${slugify(postData.data.title)}-${shortUUID}`;
+      const slug = `${slugify(postData.data.title, {
+        strict: true
+      })}-${shortUUID.generate()}`;
       const post = await prismaClient.post.create({
         data: {
           content: postData.data.content,
