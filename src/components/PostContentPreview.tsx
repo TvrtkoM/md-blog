@@ -15,6 +15,17 @@ const PostContentPreview = ({ post }: { post: PostResponseData }) => {
         <MarkdownPreview
           source={post.content}
           className="!bg-transparent"
+          rehypeRewrite={(node, index, parent) => {
+            if (
+              node.type === "element" &&
+              parent?.type === "element" &&
+              node.tagName === "a" &&
+              parent &&
+              /^h(1|2|3|4|5|6)/.test(parent.tagName)
+            ) {
+              parent.children = parent.children.slice(1);
+            }
+          }}
         ></MarkdownPreview>
       </div>
     </ContentFrame>
