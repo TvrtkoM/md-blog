@@ -13,6 +13,8 @@ export type PostFormData = z.infer<typeof PostSchema>;
 export const PostResponseSchema = z.object({
   id: z.number(),
   content: z.string(),
+  title: z.string(),
+  slug: z.string(),
   userId: z.number(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime()

@@ -12,7 +12,7 @@ const PostsPage = () => {
       <Suspense>
         <div className="flex flex-col space-y-4">
           {posts.map((post) => {
-            return <PostContentPreview content={post.content} key={post.id} />;
+            return <PostContentPreview post={post} key={post.id} />;
           })}
         </div>
       </Suspense>
