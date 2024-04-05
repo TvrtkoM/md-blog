@@ -1,5 +1,5 @@
-import AuthContainer from "@/components/AuthContainer";
-import React, { PropsWithChildren } from "react";
+import AuthContainer from "@/components/containers/AuthContainer";
+import { PropsWithChildren } from "react";
 
 const AuthLayout = ({ children }: PropsWithChildren<{}>) => {
   return <AuthContainer>{children}</AuthContainer>;

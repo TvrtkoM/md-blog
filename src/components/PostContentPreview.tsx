@@ -1,6 +1,6 @@
 "use client";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import ContentFrame from "./ContentFrame";
+import ContentFrame from "./containers/ContentFrame";
 
 const PostContentPreview = ({ content }: { content: string }) => {
   return (

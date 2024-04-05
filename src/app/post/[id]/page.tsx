@@ -1,4 +1,4 @@
-import MainContainer from "@/components/MainContainer";
+import MainContainer from "@/components/containers/MainContainer";
 import PostContentPreview from "@/components/PostContentPreview";
 import prismaClient from "@/prismaClient";
 import { notFound } from "next/navigation";

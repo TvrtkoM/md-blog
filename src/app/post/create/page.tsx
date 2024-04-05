@@ -1,7 +1,7 @@
 "use client";
-import ContentFrame from "@/components/ContentFrame";
+import ContentFrame from "@/components/containers/ContentFrame";
+import MainContainer from "@/components/containers/MainContainer";
 import CreatePostForm from "@/components/forms/CreatePostForm";
-import MainContainer from "@/components/MainContainer";
 import withAuthGuard from "@/withAuthGuard";
 
 const CreatePostPage = () => {

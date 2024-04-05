@@ -48,7 +48,7 @@ const LoginUserForm = () => {
       dispatch(hideMessage());
       router.push(next ?? "/");
     }
-  }, [isSuccess, queryClient, router, next]);
+  }, [isSuccess, queryClient, router, next, dispatch]);
 
   return (
     <>

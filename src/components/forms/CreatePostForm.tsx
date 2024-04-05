@@ -37,7 +37,7 @@ const CreatePostForm = () => {
     if (isSuccess) {
       router.push("/posts");
     }
-  }, [isSuccess]);
+  }, [isSuccess, router]);
 
   return (
     <form
