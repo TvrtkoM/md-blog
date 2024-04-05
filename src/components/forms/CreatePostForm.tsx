@@ -7,10 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import "@uiw/react-markdown-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { Label } from "../ui/Label";
+import InputWithLabel from "./InputWithLabel";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
@@ -25,7 +27,8 @@ const CreatePostForm = () => {
   } = useForm<PostFormData>({
     resolver: zodResolver(PostSchema),
     defaultValues: {
-      content: ""
+      content: "",
+      title: ""
     },
     mode: "onChange",
     reValidateMode: "onChange"
@@ -45,12 +48,22 @@ const CreatePostForm = () => {
         submitPost(data);
       })}
     >
-      <div
-        data-color-mode="light"
-        className={cn("border border-transparent rounded-sm", {
-          "border-red-500": errors?.content?.message
-        })}
-      >
+      <InputWithLabel
+        control={control}
+        label="Title *"
+        name="title"
+        placeholder="Title"
+        className="mb-6"
+      />
+      <div className="flex items-baseline justify-between h-6">
+        <Label className="leading-6 cursor-pointer">
+          <span className="text-xs">Content *</span>
+        </Label>
+        <p className="text-red-500 text-xs mt-0.5">
+          {errors?.content?.message}
+        </p>
+      </div>
+      <div data-color-mode="light">
         <Controller
           control={control}
           name="content"
@@ -58,10 +71,12 @@ const CreatePostForm = () => {
             return (
               <MarkdownEditor
                 value={value}
-                className="h-96"
                 enablePreview={false}
                 toolbarsMode={[]}
                 onChange={onChange}
+                className={cn("border border-transparent rounded-sm h-96", {
+                  "border-red-500": errors?.content?.message
+                })}
               />
             );
           }}

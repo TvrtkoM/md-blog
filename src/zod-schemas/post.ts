@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 export const PostSchema = z.object({
-  content: z.string().min(1, "Required")
+  content: z.string().min(1, "Required"),
+  title: z
+    .string()
+    .min(12, "Minimum 12 characters")
+    .max(60, "Maximum 60 characters")
 });
 
 export type PostFormData = z.infer<typeof PostSchema>;

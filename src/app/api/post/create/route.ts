@@ -1,9 +1,11 @@
 import { validationError } from "@/lib/server-errors";
 import { getAccessTokenDataOrError } from "@/lib/tokens";
+import prismaClient from "@/prismaClient";
 import { PostSchema } from "@/zod-schemas/post";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import prismaClient from "@/prismaClient";
+import slugify from "slugify";
+import shortUUID from "short-uuid";
 
 export async function POST(req: NextRequest) {
   const userData = getAccessTokenDataOrError(cookies());
@@ -16,9 +18,12 @@ export async function POST(req: NextRequest) {
     if (!postData.success) {
       return validationError(postData.error.issues);
     } else {
+      const slug = `${slugify(postData.data.title)}-${shortUUID}`;
       const post = await prismaClient.post.create({
         data: {
           content: postData.data.content,
+          title: postData.data.title,
+          slug,
           userId
         }
       });

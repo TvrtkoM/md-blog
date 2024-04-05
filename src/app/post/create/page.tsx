@@ -2,15 +2,14 @@
 import ContentFrame from "@/components/containers/ContentFrame";
 import MainContainer from "@/components/containers/MainContainer";
 import CreatePostForm from "@/components/forms/CreatePostForm";
+import Heading2 from "@/components/ui/Heading2";
 import withAuthGuard from "@/withAuthGuard";
 
 const CreatePostPage = () => {
   return (
     <MainContainer>
       <ContentFrame>
-        <h2 className="text-xl font-semibold pb-3 border-b border-stone-400 mb-6">
-          Create new post
-        </h2>
+        <Heading2>Create new post</Heading2>
         <CreatePostForm />
       </ContentFrame>
     </MainContainer>

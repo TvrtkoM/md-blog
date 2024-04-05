@@ -23,14 +23,15 @@ const InputWithLabel = <T extends FieldValues>({
   name,
   label,
   placeholder,
-  type
+  type,
+  className = ""
 }: InputWithLabelProps<T>) => {
   const {
     field,
     fieldState: { invalid, error }
   } = useController<T>({ control, name });
   return (
-    <fieldset>
+    <fieldset className={className}>
       <div className="flex items-baseline justify-between h-6">
         <Label htmlFor={name} className="leading-6 cursor-pointer">
           <span className="text-xs">{label}</span>

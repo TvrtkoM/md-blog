@@ -1,5 +1,6 @@
 "use client";
 import LoginUserForm from "@/components/forms/LoginUserForm";
+import Heading2 from "@/components/ui/Heading2";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -21,9 +22,7 @@ const LoginPage = () => {
     <>
       <Suspense>
         <NewUserMessage />
-        <h2 className="text-xl font-semibold pb-3 border-b border-stone-400">
-          Log in
-        </h2>
+        <Heading2>Log in</Heading2>
         <LoginUserForm />
       </Suspense>
     </>

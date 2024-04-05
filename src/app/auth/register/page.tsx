@@ -1,11 +1,10 @@
 import RegisterUserForm from "@/components/forms/RegisterUserForm";
+import Heading2 from "@/components/ui/Heading2";
 
 const RegistrationPage = () => {
   return (
     <>
-      <h2 className="text-xl font-semibold pb-3 border-b border-stone-400">
-        Registration
-      </h2>
+      <Heading2>Registration</Heading2>
       <RegisterUserForm />
     </>
   );
