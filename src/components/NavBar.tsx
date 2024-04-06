@@ -67,15 +67,20 @@ const NavBar = () => {
     <div className="h-11 w-full bg-slate-700 shadow-lg">
       <div className="container h-full max-w-screen-xl px-4">
         <div className="flex items-center justify-between h-full text-gray-200 text-sm">
-          {user && (
-            <div>
+          <div className="space-x-3">
+            {user && (
               <NavBarItem
                 label="Create Post"
                 selected={path === "/post/create"}
                 path="/post/create"
               />
-            </div>
-          )}
+            )}
+            <NavBarItem
+              label="Posts"
+              selected={path === "/posts"}
+              path="/posts"
+            />
+          </div>
           <div className="ml-auto">
             <AuthNav />
           </div>
