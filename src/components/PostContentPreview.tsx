@@ -1,21 +1,25 @@
 "use client";
+import { useUserContext } from "@/providers/UserProvider";
 import { PostResponseData } from "@/zod-schemas/post";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import Link from "next/link";
 import ContentFrame from "./containers/ContentFrame";
 import Heading2 from "./ui/Heading2";
-import Link from "next/link";
 
 const PostContentPreview = ({ post }: { post: PostResponseData }) => {
+  const { user } = useUserContext();
   return (
     <ContentFrame>
       <Heading2 className="flex items-baseline justify-between">
         <Link href={`/post/${post.slug}`}>{post.title}</Link>
-        <Link
-          className="text-xs underline hover:opacity-80"
-          href={`/post/edit/${post.slug}`}
-        >
-          Edit
-        </Link>
+        {user && user.id === post.userId && (
+          <Link
+            className="text-xs underline hover:opacity-80"
+            href={`/post/edit/${post.slug}`}
+          >
+            Edit
+          </Link>
+        )}
       </Heading2>
       <div data-color-mode="light">
         <MarkdownPreview
