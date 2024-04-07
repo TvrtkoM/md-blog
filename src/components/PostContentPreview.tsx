@@ -8,8 +8,14 @@ import Link from "next/link";
 const PostContentPreview = ({ post }: { post: PostResponseData }) => {
   return (
     <ContentFrame>
-      <Heading2>
+      <Heading2 className="flex items-baseline justify-between">
         <Link href={`/post/${post.slug}`}>{post.title}</Link>
+        <Link
+          className="text-xs underline hover:opacity-80"
+          href={`/post/edit/${post.slug}`}
+        >
+          Edit
+        </Link>
       </Heading2>
       <div data-color-mode="light">
         <MarkdownPreview
