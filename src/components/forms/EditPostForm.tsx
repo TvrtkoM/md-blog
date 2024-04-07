@@ -8,7 +8,7 @@ import "@uiw/react-markdown-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
 import { Label } from "../ui/Label";
@@ -36,6 +36,8 @@ const EditPostForm = ({ post }: { post?: PostFormData }) => {
   const { mutate: submitPost, isSuccess } = useCreateOrUpdatePostMutation();
   const router = useRouter();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const isNew = Boolean(post);
 
   useEffect(() => {
@@ -47,6 +49,7 @@ const EditPostForm = ({ post }: { post?: PostFormData }) => {
   return (
     <form
       onSubmit={handleSubmit((data) => {
+        setIsSubmitting(true);
         if (isNew) {
           submitPost({ ...data, id: post?.id });
         } else {
@@ -88,7 +91,11 @@ const EditPostForm = ({ post }: { post?: PostFormData }) => {
           }}
         />
       </div>
-      <Button type="submit" className="mt-7" disabled={!isValid}>
+      <Button
+        type="submit"
+        className="mt-7"
+        disabled={!isValid || isSubmitting}
+      >
         {post ? "Update" : "Create"}
       </Button>
     </form>
