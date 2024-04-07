@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import useCreatePostMutation from "@/mutations/useCreatePostMutation";
+import useCreateOrUpdatePostMutation from "@/mutations/useCreateOrUpdatePostMutation";
 import { PostFormData, PostSchema } from "@/zod-schemas/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "@uiw/react-markdown-editor/markdown-editor.css";
@@ -19,22 +19,24 @@ const MarkdownEditor = dynamic(
   { ssr: false, loading: () => <>Loading editor...</> }
 );
 
-const CreatePostForm = () => {
+const EditPostForm = ({ post }: { post?: PostFormData }) => {
   const {
     handleSubmit,
     control,
     formState: { errors, isValid }
   } = useForm<PostFormData>({
     resolver: zodResolver(PostSchema),
-    defaultValues: {
+    defaultValues: post ?? {
       content: "",
       title: ""
     },
     mode: "onChange",
     reValidateMode: "onChange"
   });
-  const { mutate: submitPost, isSuccess } = useCreatePostMutation();
+  const { mutate: submitPost, isSuccess } = useCreateOrUpdatePostMutation();
   const router = useRouter();
+
+  const isNew = Boolean(post);
 
   useEffect(() => {
     if (isSuccess) {
@@ -45,7 +47,11 @@ const CreatePostForm = () => {
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        submitPost(data);
+        if (isNew) {
+          submitPost({ ...data, id: post?.id });
+        } else {
+          submitPost(data);
+        }
       })}
     >
       <InputWithLabel
@@ -83,10 +89,10 @@ const CreatePostForm = () => {
         />
       </div>
       <Button type="submit" className="mt-7" disabled={!isValid}>
-        Create
+        {post ? "Update" : "Create"}
       </Button>
     </form>
   );
 };
 
-export default CreatePostForm;
+export default EditPostForm;

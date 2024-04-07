@@ -2,8 +2,10 @@ import { ComponentType, useEffect } from "react";
 import { useUserContext } from "./providers/UserProvider";
 import { usePathname, useRouter } from "next/navigation";
 
-export default function withAuthGuard(Component: ComponentType) {
-  const AuthGuard = () => {
+export default function withAuthGuard<P extends object>(
+  Component: ComponentType<P>
+) {
+  const AuthGuard = (props: P) => {
     const { user, isLoading } = useUserContext();
     const router = useRouter();
     const pathname = usePathname();
@@ -19,7 +21,7 @@ export default function withAuthGuard(Component: ComponentType) {
       return null;
     }
 
-    return <Component />;
+    return <Component {...props} />;
   };
   return AuthGuard;
 }

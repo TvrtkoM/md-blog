@@ -8,7 +8,8 @@ export enum ErrorCode {
   VALIDATION_ERROR = 2001,
   GENERAL_BAD_REQUEST = 3001,
   INVALID_TOKEN = 4001,
-  POST_NOT_FOUND = 5001
+  POST_NOT_FOUND = 5001,
+  NO_POST_ID_SUPPLIED = 5002
 }
 
 export interface ErrorJson {
@@ -79,5 +80,13 @@ export function postNotFound() {
     message: "Post not found",
     errorCode: ErrorCode.POST_NOT_FOUND,
     statusCode: 404
+  });
+}
+
+export function noPostIdSupplied() {
+  return errorJson({
+    message: "No post id supplied",
+    errorCode: ErrorCode.NO_POST_ID_SUPPLIED,
+    statusCode: 406
   });
 }

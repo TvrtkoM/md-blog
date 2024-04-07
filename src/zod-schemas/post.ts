@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const PostSchema = z.object({
+  id: z.number().optional(),
   content: z.string().min(1, "Required"),
   title: z
     .string()
