@@ -1,6 +1,6 @@
 "use client";
 import MainContainer from "@/components/containers/MainContainer";
-import PostContentPreview from "@/components/PostContentPreview";
+import Post from "@/components/Post";
 import usePostBySlugQuery from "@/queries/usePostBySlugQuery";
 import { notFound } from "next/navigation";
 
@@ -12,7 +12,7 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
   }
   return (
     <MainContainer>
-      <PostContentPreview post={post} />
+      <Post post={post} />
     </MainContainer>
   );
 };

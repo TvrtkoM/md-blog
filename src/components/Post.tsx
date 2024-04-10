@@ -6,7 +6,7 @@ import Link from "next/link";
 import ContentFrame from "./containers/ContentFrame";
 import Heading2 from "./ui/Heading2";
 
-const PostContentPreview = ({ post }: { post: PostResponseData }) => {
+const Post = ({ post }: { post: PostResponseData }) => {
   const { user } = useUserContext();
   return (
     <ContentFrame>
@@ -42,4 +42,4 @@ const PostContentPreview = ({ post }: { post: PostResponseData }) => {
   );
 };
 
-export default PostContentPreview;
+export default Post;
