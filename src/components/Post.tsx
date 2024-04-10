@@ -5,6 +5,9 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import Link from "next/link";
 import ContentFrame from "./containers/ContentFrame";
 import Heading2 from "./ui/Heading2";
+import rehypeSanitize from "rehype-sanitize";
+
+const rehypePlugins = [rehypeSanitize];
 
 const Post = ({ post }: { post: PostResponseData }) => {
   const { user } = useUserContext();
@@ -36,6 +39,7 @@ const Post = ({ post }: { post: PostResponseData }) => {
               parent.children = parent.children.slice(1);
             }
           }}
+          rehypePlugins={rehypePlugins}
         ></MarkdownPreview>
       </div>
     </ContentFrame>
