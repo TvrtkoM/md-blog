@@ -1,7 +1,7 @@
 "use client";
 
 import MainContainer from "@/components/containers/MainContainer";
-import PostContentPreview from "@/components/PostContentPreview";
+import Post from "@/components/Post";
 import { usePostsQuery } from "@/queries/usePostsQuery";
 import { Suspense } from "react";
 
@@ -12,7 +12,7 @@ const PostsPage = () => {
       <Suspense>
         <div className="flex flex-col space-y-4">
           {posts.map((post) => {
-            return <PostContentPreview post={post} key={post.id} />;
+            return <Post post={post} key={post.id} />;
           })}
         </div>
       </Suspense>
