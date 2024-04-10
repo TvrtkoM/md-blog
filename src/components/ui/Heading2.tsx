@@ -8,7 +8,7 @@ const Heading2 = ({
   return (
     <h2
       className={cn(
-        "text-xl font-semibold pb-3 border-b border-stone-400 mb-6",
+        "text-xl font-semibold pb-3 border-b border-stone-400 mb-6 text-stone-700",
         className
       )}
     >
