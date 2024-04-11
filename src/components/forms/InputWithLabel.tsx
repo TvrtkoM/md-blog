@@ -1,14 +1,13 @@
-import React, { InputHTMLAttributes } from "react";
-import { Label } from "../ui/Label";
-import { Input } from "../ui/Input";
+import { cn } from "@/lib/utils";
+import { InputHTMLAttributes } from "react";
 import {
   Control,
   FieldPath,
   FieldValues,
-  RegisterOptions,
   useController
 } from "react-hook-form";
-import { cn } from "@/lib/utils";
+import { Input } from "../ui/Input";
+import { Label } from "../ui/Label";
 
 interface InputWithLabelProps<T extends FieldValues>
   extends InputHTMLAttributes<HTMLInputElement> {
