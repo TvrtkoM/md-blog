@@ -6,15 +6,22 @@ import Link from "next/link";
 import ContentFrame from "./containers/ContentFrame";
 import Heading2 from "./ui/Heading2";
 import rehypeSanitize from "rehype-sanitize";
+import useUserByIdQuery from "@/queries/useUserByIdQuery";
 
 const rehypePlugins = [rehypeSanitize];
 
 const Post = ({ post }: { post: PostResponseData }) => {
   const { user } = useUserContext();
+  const { data: postUser } = useUserByIdQuery(post.userId);
   return (
     <ContentFrame>
       <Heading2 className="flex items-baseline justify-between">
-        <Link href={`/post/${post.slug}`}>{post.title}</Link>
+        <div className="space-x-2">
+          <Link href={`/post/${post.slug}`}>{post.title}</Link>
+          <span className="text-xs">
+            <em> by {postUser?.name}</em>
+          </span>
+        </div>
         {user && user.id === post.userId && (
           <Link
             className="text-xs underline hover:opacity-80"
@@ -41,6 +48,10 @@ const Post = ({ post }: { post: PostResponseData }) => {
           }}
           rehypePlugins={rehypePlugins}
         ></MarkdownPreview>
+      </div>
+      <div className="mt-4 border-t border-stone-400 flex justify-between pt-2 text-xs">
+        <div>Created at: {post.createdAt}</div>
+        <div>Updated at: {post.updatedAt}</div>
       </div>
     </ContentFrame>
   );
