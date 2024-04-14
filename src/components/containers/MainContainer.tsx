@@ -1,8 +1,14 @@
+import { cn } from "@/lib/utils";
 import React, { PropsWithChildren } from "react";
 
-const MainContainer = ({ children }: PropsWithChildren<{}>) => {
+const MainContainer = ({
+  children,
+  className = ""
+}: PropsWithChildren<{ className?: string }>) => {
   return (
-    <section className="container max-w-screen-xl mt-10 px-4">
+    <section
+      className={cn("container max-w-screen-xl mt-10 mb-10 px-4", className)}
+    >
       {children}
     </section>
   );
