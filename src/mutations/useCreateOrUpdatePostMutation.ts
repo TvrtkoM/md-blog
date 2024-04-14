@@ -9,19 +9,17 @@ export default function useCreateOrUpdatePostMutation() {
   return useMutation<PostResponseData, AxiosError<ErrorResponse>, PostFormData>(
     {
       mutationFn: async (data) => {
-        const { id, content, title } = data;
-        if (id != null) {
-          const res = await axiosInstance.put<PostResponseData>("/api/post", {
-            id,
-            content,
-            title
-          });
+        if (data.id != null) {
+          const res = await axiosInstance.put<PostResponseData>(
+            "/api/post",
+            data
+          );
           return res.data;
         }
-        const res = await axiosInstance.post<PostResponseData>("/api/post", {
-          content,
-          title
-        });
+        const res = await axiosInstance.post<PostResponseData>(
+          "/api/post",
+          data
+        );
         return res.data;
       },
       onSuccess: () => {

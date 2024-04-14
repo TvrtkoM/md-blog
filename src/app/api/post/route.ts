@@ -6,6 +6,7 @@ import {
 import { getAccessTokenDataOrError } from "@/lib/tokens";
 import prismaClient from "@/prismaClient";
 import { PostSchema } from "@/zod-schemas/post";
+import omit from "lodash/omit";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import shortUUID from "short-uuid";
@@ -27,8 +28,7 @@ export async function POST(req: NextRequest) {
       })}-${shortUUID.generate()}`;
       const post = await prismaClient.post.create({
         data: {
-          content: postData.data.content,
-          title: postData.data.title,
+          ...postData.data,
           slug,
           userId
         }
@@ -51,7 +51,7 @@ export async function PUT(req: NextRequest) {
     if (!postData.success) {
       return validationError(postData.error.issues);
     } else {
-      const { id, content, title } = postData.data;
+      const { id, title } = postData.data;
       if (id == null) {
         return noPostIdSupplied();
       }
@@ -70,8 +70,7 @@ export async function PUT(req: NextRequest) {
       const post = await prismaClient.post.update({
         where: { id },
         data: {
-          content,
-          title,
+          ...omit(postData.data, "id"),
           userId,
           slug
         }
