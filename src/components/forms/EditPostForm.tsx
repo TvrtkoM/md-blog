@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
-import InputWithLabel from "./InputWithLabel";
+import InputWithLabel from "./TextInputWithLabel";
 import MarkdownEditorInput from "./MarkdownEditorInput";
 
 const EditPostForm = ({ post }: { post?: PostFormData }) => {

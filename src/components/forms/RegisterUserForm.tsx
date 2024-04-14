@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { useDebounce } from "use-debounce";
 import { z } from "zod";
 import { Button } from "../ui/Button";
-import InputWithLabel from "./InputWithLabel";
+import TextInputWithLabel from "./TextInputWithLabel";
 
 export type RegistrationFormData = z.infer<typeof RegisterUserSchema>;
 
@@ -70,19 +70,19 @@ const RegisterUserForm = () => {
           register(data);
         })}
       >
-        <InputWithLabel
+        <TextInputWithLabel
           control={control}
           name="name"
           label="Username *"
           placeholder="Username"
         />
-        <InputWithLabel
+        <TextInputWithLabel
           control={control}
           name="email"
           label="E-mail *"
           placeholder="E-mail"
         />
-        <InputWithLabel
+        <TextInputWithLabel
           control={control}
           name="password"
           label="Password *"
@@ -93,7 +93,7 @@ const RegisterUserForm = () => {
           Password must be 10-21 characters long, contain one uppercase letter,
           a number and a special symbol
         </p>
-        <InputWithLabel
+        <TextInputWithLabel
           control={control}
           name="confirmPassword"
           label="Confirm password *"

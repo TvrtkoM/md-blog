@@ -17,7 +17,7 @@ interface InputWithLabelProps<T extends FieldValues>
   placeholder: string;
 }
 
-const InputWithLabel = <T extends FieldValues>({
+const TextInputWithLabel = <T extends FieldValues>({
   control,
   name,
   label,
@@ -51,4 +51,4 @@ const InputWithLabel = <T extends FieldValues>({
   );
 };
 
-export default InputWithLabel;
+export default TextInputWithLabel;

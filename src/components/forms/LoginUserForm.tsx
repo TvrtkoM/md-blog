@@ -3,7 +3,7 @@ import { LoginFormData, LoginUserSchema } from "@/zod-schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
-import InputWithLabel from "./InputWithLabel";
+import TextInputWithLabel from "./TextInputWithLabel";
 import useLoginUserMutation from "@/mutations/useLoginUserMutation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -58,13 +58,13 @@ const LoginUserForm = () => {
           login(data);
         })}
       >
-        <InputWithLabel
+        <TextInputWithLabel
           control={control}
           name="email"
           label="E-mail *"
           placeholder="E-mail"
         />
-        <InputWithLabel
+        <TextInputWithLabel
           control={control}
           name="password"
           label="Password *"
