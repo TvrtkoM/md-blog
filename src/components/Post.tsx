@@ -1,12 +1,13 @@
 "use client";
+import { formatDateStringLocalized } from "@/lib/utils";
 import { useUserContext } from "@/providers/UserProvider";
+import useUserByIdQuery from "@/queries/useUserByIdQuery";
 import { PostResponseData } from "@/zod-schemas/post";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import Link from "next/link";
+import rehypeSanitize from "rehype-sanitize";
 import ContentFrame from "./containers/ContentFrame";
 import Heading2 from "./ui/Heading2";
-import rehypeSanitize from "rehype-sanitize";
-import useUserByIdQuery from "@/queries/useUserByIdQuery";
 
 const rehypePlugins = [rehypeSanitize];
 
@@ -50,8 +51,14 @@ const Post = ({ post }: { post: PostResponseData }) => {
         ></MarkdownPreview>
       </div>
       <div className="mt-4 border-t border-stone-400 flex justify-between pt-2 text-xs">
-        <div>Created at: {post.createdAt}</div>
-        <div>Updated at: {post.updatedAt}</div>
+        <div>
+          <span className="font-medium">Created at:</span>{" "}
+          {formatDateStringLocalized(post.createdAt)}
+        </div>
+        <div>
+          <span className="font-medium">Updated at:</span>{" "}
+          {formatDateStringLocalized(post.updatedAt)}
+        </div>
       </div>
     </ContentFrame>
   );
