@@ -47,7 +47,7 @@ const EditPostForm = ({ post }: { post?: PostFormData }) => {
       }
     });
     return unsubscribe;
-  }, []);
+  }, [setValue]);
 
   return (
     <form
