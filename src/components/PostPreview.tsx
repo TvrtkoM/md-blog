@@ -7,10 +7,17 @@ import { formatDateStringLocalized } from "@/lib/utils";
 import Link from "next/link";
 
 const PostPreview = ({ post }: { post: PostResponseData }) => {
+  const getPostSummary = () => {
+    if (post.summary) {
+      return post.summary;
+    } else {
+      return `${post.content.slice(0, 197)}...`;
+    }
+  };
   return (
     <ContentFrame>
       <PostHeading post={post} />
-      <div className="italic">{post.summary ?? ""}</div>
+      <div className="italic">{getPostSummary()}</div>
       <PostFooter>
         <div>
           <span className="font-medium">Created at:</span>{" "}
