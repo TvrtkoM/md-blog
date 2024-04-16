@@ -9,7 +9,7 @@ import PostFooter from "./containers/PostFooter";
 const Post = ({ post }: { post: PostResponseData }) => {
   return (
     <ContentFrame>
-      <PostHeading post={post} />
+      <PostHeading post={post} link={false} />
       <div data-color-mode="light">
         <MarkdownPreview content={post.content} />
       </div>

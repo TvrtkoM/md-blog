@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, PropsWithChildren } from "react";
 import Heading2 from "./ui/Heading2";
 import Link from "next/link";
 import { PostResponseData } from "@/zod-schemas/post";
@@ -8,16 +8,21 @@ import { useUserContext } from "@/providers/UserProvider";
 
 type PostHeadingProps = {
   post: PostResponseData;
+  link?: boolean;
 };
 
-const PostHeading: FC<PostHeadingProps> = ({ post }) => {
+const PostHeading: FC<PostHeadingProps> = ({ post, link = true }) => {
   const { data: postUser } = useUserByIdQuery(post.userId);
   const { user } = useUserContext();
 
   return (
     <Heading2 className="flex items-baseline justify-between">
       <div className="space-x-2">
-        <Link href={`/post/${post.slug}`}>{post.title}</Link>
+        {link ? (
+          <Link href={`/post/${post.slug}`}>{post.title}</Link>
+        ) : (
+          <span>{post.title}</span>
+        )}
         <span className="text-xs">
           <em> by {postUser?.name}</em>
         </span>
