@@ -1,10 +1,10 @@
 "use client";
-import React, { FC, PropsWithChildren } from "react";
-import Heading2 from "./ui/Heading2";
-import Link from "next/link";
-import { PostResponseData } from "@/zod-schemas/post";
-import useUserByIdQuery from "@/queries/useUserByIdQuery";
 import { useUserContext } from "@/providers/UserProvider";
+import useUserByIdQuery from "@/queries/useUserByIdQuery";
+import { PostResponseData } from "@/zod-schemas/post";
+import Link from "next/link";
+import { FC } from "react";
+import Heading2 from "./ui/Heading2";
 
 type PostHeadingProps = {
   post: PostResponseData;
