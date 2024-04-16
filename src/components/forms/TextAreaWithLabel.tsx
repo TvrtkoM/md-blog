@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Label } from "@radix-ui/react-label";
 import { InputHTMLAttributes } from "react";
 import {
   Control,
@@ -6,25 +7,25 @@ import {
   FieldValues,
   useController
 } from "react-hook-form";
-import { Input } from "../ui/Input";
-import { Label } from "../ui/Label";
+import { TextArea } from "../ui/TextArea";
 
-interface InputWithLabelProps<T extends FieldValues>
-  extends InputHTMLAttributes<HTMLInputElement> {
+interface TextAreaWithLabelProps<T extends FieldValues>
+  extends InputHTMLAttributes<HTMLTextAreaElement> {
   control: Control<T>;
   name: FieldPath<T>;
   label: string;
   placeholder: string;
+  inputClassname?: string;
 }
 
-const TextInputWithLabel = <T extends FieldValues>({
+const TextAreaWithLabel = <T extends FieldValues>({
   control,
   name,
   label,
   placeholder,
-  type,
-  className = ""
-}: InputWithLabelProps<T>) => {
+  className = "",
+  inputClassname = ""
+}: TextAreaWithLabelProps<T>) => {
   const {
     field,
     fieldState: { invalid, error }
@@ -37,18 +38,20 @@ const TextInputWithLabel = <T extends FieldValues>({
         </Label>
         <p className="text-red-500 text-xs mt-0.5">{error?.message}</p>
       </div>
-      <Input
+      <TextArea
         {...field}
         id={name}
-        type={type}
         placeholder={placeholder}
         autoComplete="off"
-        className={cn({
-          "border-red-500 focus-visible:ring-red-500": invalid
-        })}
+        className={cn(
+          {
+            "border-red-500 focus-visible:ring-red-500": invalid
+          },
+          inputClassname
+        )}
       />
     </fieldset>
   );
 };
 
-export default TextInputWithLabel;
+export default TextAreaWithLabel;

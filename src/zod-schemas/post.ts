@@ -2,8 +2,12 @@ import { z } from "zod";
 
 export const PostSchema = z.object({
   id: z.number().optional(),
-  content: z.string().min(1, "Required"),
-  summary: z.string().max(250, "Maximum 250 characters"),
+  content: z.string().min(500, "Post needs to be minimum 500 characters"),
+  summary: z
+    .string()
+    .min(200, "Minimum 200 characters")
+    .max(250, "Maximum 250 characters")
+    .optional(),
   title: z
     .string()
     .min(12, "Minimum 12 characters")
@@ -15,6 +19,7 @@ export type PostFormData = z.infer<typeof PostSchema>;
 export const PostResponseSchema = z.object({
   id: z.number(),
   content: z.string(),
+  summary: z.string(),
   title: z.string(),
   slug: z.string(),
   userId: z.number(),

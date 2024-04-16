@@ -7,13 +7,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
-import InputWithLabel from "./TextInputWithLabel";
 import MarkdownEditorInput from "./MarkdownEditorInput";
+import TextAreaWithLabel from "./TextAreaWithLabel";
+import InputWithLabel from "./TextInputWithLabel";
 
 const EditPostForm = ({ post }: { post?: PostFormData }) => {
   const {
     handleSubmit,
     control,
+    setValue,
+    watch,
     formState: { isValid }
   } = useForm<PostFormData>({
     resolver: zodResolver(PostSchema),
@@ -37,6 +40,15 @@ const EditPostForm = ({ post }: { post?: PostFormData }) => {
     }
   }, [isSuccess, router]);
 
+  useEffect(() => {
+    const { unsubscribe } = watch((value, { name, type }) => {
+      if (name === "summary" && type === "change" && value.summary === "") {
+        setValue("summary", undefined, { shouldValidate: true });
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <form
       onSubmit={handleSubmit((data) => {
@@ -53,13 +65,15 @@ const EditPostForm = ({ post }: { post?: PostFormData }) => {
         label="Title *"
         name="title"
         placeholder="Title"
-        className="mb-6"
+        className="mb-4"
       />
-      <MarkdownEditorInput
+      <TextAreaWithLabel
         control={control}
         name="summary"
         label="Summary"
-        className="h-40 mb-4"
+        placeholder="Summary"
+        className="mb-4 min-h-10"
+        inputClassname="resize-none"
       />
       <MarkdownEditorInput
         control={control}
