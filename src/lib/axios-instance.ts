@@ -11,7 +11,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       const refreshRes = await axiosInstance.post("/api/user/refresh");
       if (error.config) {
-        const res = await axiosInstance(error.config);
+        const res = await axios(error.config);
         return res;
       }
       return refreshRes;
